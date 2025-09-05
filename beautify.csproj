@@ -7,4 +7,9 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="jomiuns_cli" Version="1.0.9" />
+    <PackageReference Include="TextCopy" Version="6.2.1" />
+  </ItemGroup>
+
 </Project>

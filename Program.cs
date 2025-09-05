@@ -1,17 +1,60 @@
 ﻿// See https://aka.ms/new-console-template for more information
+using jomiunsCli;
+using jomiunsExtensions;
 using System.Text.Json;
 using System.Text.RegularExpressions;
-var stringFromPipeline = Console.In.ReadToEndAsync();
-var sanitiedString = (await stringFromPipeline).Trim('\n', '\r', ' ');
+var sourceString = "";
+
+var aParser = new CLIparser(args);
+var aClip = aParser.registerCommand("untuk ambil source data dari clipboard", "--clip");
+var aShow = aParser.registerCommand("show the source data before execution", "show");
+var aSplit = aParser.registerCommand<string[]>("untuk split source data by a delimiter", "delimiternya, contoh ;", "split", "splitby");
+if (aParser.startParsing() == false)
+    return;
+
+
+
+if (aClip.Results.Any())
+{
+    var aClipboard = new TextCopy.Clipboard();
+    sourceString = aClipboard.GetText();
+    if (sourceString.isNullOrEmpty())
+    {
+        Console.WriteLine("Clipboard is empty");
+        return;
+    }
+}
+else
+{
+    var stringFromPipeline = Console.In.ReadToEndAsync();
+    sourceString = await stringFromPipeline;
+}
+
+var sanitiedString = sourceString.Trim('\n', '\r', ' ');
+
+if (aShow.Results.Any())
+    Console.WriteLine(sourceString);
+
 var itsAJson = Regex.IsMatch(sanitiedString, @"^[{\[].*[\]}]$");
 var itsAnXml = Regex.IsMatch(sanitiedString, @"^<.*>$");
+
+if (aSplit.Results.Any())
+{
+    var delimiter = aSplit.Results.First();
+    var splitResults = sanitiedString.Split(delimiter.theResult, StringSplitOptions.None);
+    var aJoined = string.Join("\n", splitResults);
+    Console.WriteLine(aJoined);
+    return;
+}
+
 if (itsAJson)
 {
-    using JsonDocument doc = JsonDocument.Parse(await stringFromPipeline);
+    using JsonDocument doc = JsonDocument.Parse(sanitiedString);
     var root = doc.RootElement;
-    var options = new JsonSerializerOptions{WriteIndented = true};
+    var options = new JsonSerializerOptions { WriteIndented = true };
     string prettyJson = JsonSerializer.Serialize(root, options);
     Console.WriteLine(prettyJson);
+    return;
 }
 
 if (itsAnXml)
@@ -23,4 +66,5 @@ if (itsAnXml)
     doc.WriteTo(xmlTextWriter);
     xmlTextWriter.Flush();
     Console.WriteLine(stringWriter.GetStringBuilder().ToString());
+    return;
 }

@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "beautify": {
+      "commandName": "Project",
+      "commandLineArgs": "--clip"
+    }
+  }
+}
