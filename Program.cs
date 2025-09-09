@@ -6,7 +6,7 @@ using System.Text.RegularExpressions;
 var sourceString = "";
 
 var aParser = new CLIparser(args);
-var aClip = aParser.registerCommand("untuk ambil source data dari clipboard", "--clip");
+var aClip = aParser.registerCommand("untuk ambil source data dari clipboard", "--clip", "dari clipboard");
 var aShow = aParser.registerCommand("show the source data before execution", "show");
 var aSplit = aParser.registerCommand<string[]>("untuk split source data by a delimiter", "delimiternya, contoh ;", "split", "splitby");
 if (aParser.startParsing() == false)
@@ -35,7 +35,7 @@ var sanitiedString = sourceString.Trim('\n', '\r', ' ');
 if (aShow.Results.Any())
     Console.WriteLine(sourceString);
 
-var itsAJson = Regex.IsMatch(sanitiedString, @"^[{\[].*[\]}]$");
+var itsAJson = Regex.IsMatch(sanitiedString, @"^\s*{[\s\S]*}\s*$");
 var itsAnXml = Regex.IsMatch(sanitiedString, @"^<.*>$");
 
 if (aSplit.Results.Any())
