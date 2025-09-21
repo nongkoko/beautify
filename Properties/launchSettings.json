@@ -2,7 +2,7 @@
   "profiles": {
     "beautify": {
       "commandName": "Project",
-      "commandLineArgs": "--clip"
+      "commandLineArgs": "ambil property latitude longitude dalam format \"coordinate hasil01,hasil02\" dari file C:\\Users\\afrya\\satuData.json"
     }
   }
 }
