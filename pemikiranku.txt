@@ -1,0 +1,8 @@
+apakahh seabaiknya ambil property itu resulting list of object aja
+
+nanti tinggal yang butuh2 bisa ambil dari situ
+
+berarti di main processnya adalah
+
+check apakah ada projection
+kalau ada projection maka otomatis butuh data input aight ?

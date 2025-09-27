@@ -8,8 +8,15 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="theTester\**" />
+    <EmbeddedResource Remove="theTester\**" />
+    <None Remove="theTester\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="jomiuns_cli" Version="1.1.5" />
     <PackageReference Include="microsoft.extensions.dependencyInjection" Version="9.0.9" />
+    <PackageReference Include="newtonsoft.json" Version="13.0.4" />
     <PackageReference Include="TextCopy" Version="6.2.1" />
   </ItemGroup>
 
