@@ -10,6 +10,7 @@ public class Program
     {
         var aParser = factory.newCliParser(args);
         aParser.registerCommand("untuk ambil source data dari clipboard", "--clip", "dari clipboard").setKeyName("dariClip");
+        aParser.registerCommand<int>("ambil item ke n dari array of object di json", "n starting 1", "item ke").setKeyName("itemKe");
         aParser.registerCommand<string>("untuk ambil source data dari file", "path file name", commandTriggers: "dari file").setKeyName("dariFile");
         aParser.registerCommand("show the source data before execution", commandTriggers: "show").setKeyName("showContent");
         aParser.registerCommand<string[]>("ambil data untuk projection", "list properties delimited by space", commandTriggers: "ambil property").setKeyName("ambilProperty");

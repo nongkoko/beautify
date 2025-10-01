@@ -25,5 +25,18 @@ namespace theTester
             Program.Main(theArgs);
 
         }
+        
+        [TestMethod("dari item ke 1 ambil property latitude longitude dalam suatu format, dengan sumber data dari pipe")]
+        public void TestMethod3()
+        {
+            var fileReader = new StreamReader(@"C:\Users\afrya\samplefile");
+            Console.SetIn(fileReader);
+
+            var commandLine = @"item ke 1 ambil property latitude longitude dalam format ""coordinate hasil01,hasil02"" ";
+            var theArgs = commandLine.toArgs();
+
+            Program.Main(theArgs);
+
+        }
     }
 }
