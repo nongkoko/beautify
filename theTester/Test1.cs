@@ -38,5 +38,18 @@ namespace theTester
             Program.Main(theArgs);
 
         }
+
+        [TestMethod("dari file anu, wrap with awal and akhir")]
+        public void TestMethod4()
+        {
+            var fileReader = new StreamReader(@"C:\Users\afrya\theAlamat");
+            Console.SetIn(fileReader);
+
+            var commandLine = @"wrap with { }";
+            var theArgs = commandLine.toArgs();
+
+            Program.Main(theArgs);
+
+        }
     }
 }

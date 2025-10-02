@@ -1,5 +1,4 @@
 ﻿using jomiunsCli;
-using jomiunsExtensions;
 using Newtonsoft.Json.Linq;
 using System.Text.Json;
 
@@ -20,8 +19,6 @@ internal class jsonProcess(dataSourceSolver _dsSolver, iCLIparser _cliParser)
 
     internal object[] getProperties()
     {
-
-
 
         if (_ambilProperty.Results.Any())
         {

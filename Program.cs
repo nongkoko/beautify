@@ -9,6 +9,7 @@ public class Program
     public static void Main(string[] args)
     {
         var aParser = factory.newCliParser(args);
+        aParser.registerCommand<string, string>("wrap dengan awal dan akhir", "awal", "akhir", "wrap with").setKeyName("wrapthis");
         aParser.registerCommand("untuk ambil source data dari clipboard", "--clip", "dari clipboard").setKeyName("dariClip");
         aParser.registerCommand<int>("ambil item ke n dari array of object di json", "n starting 1", "item ke").setKeyName("itemKe");
         aParser.registerCommand<string>("untuk ambil source data dari file", "path file name", commandTriggers: "dari file").setKeyName("dariFile");
@@ -23,6 +24,7 @@ public class Program
         var aBuilder = new ServiceCollection();
         aBuilder.AddScoped(oo => aParser);
         aBuilder.AddScoped<dataSourceSolver>();
+        aBuilder.AddScoped<wrapper>();
         aBuilder.AddScoped<projectionService>();
         aBuilder.AddScoped<jsonProcess>();
         var servProvider = aBuilder.BuildServiceProvider();
@@ -34,6 +36,13 @@ public class Program
 
         var itsAJson = Regex.IsMatch(dataSource, @"^\s*[{\[][\s\S]*[}\]]\s*$");
         var itsAnXml = Regex.IsMatch(dataSource, @"^<[\s\S]*>$");
+
+        if (aParser["wrapthis"] is iKommandTwo<string, string> theWrap && theWrap.Results.Any())
+        {
+            var (awal, akhir) = theWrap.Results.First().theResult;
+            servProvider.GetRequiredService<wrapper>().execute(awal, akhir);
+            return;
+        }
 
         if (aParser["dalamFormat"] is iKommandOne<string> theFormat && theFormat.Results.Any())
         {
