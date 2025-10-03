@@ -7,8 +7,11 @@ internal class projectionService(jsonProcess _jsonProces, iCLIparser _cliParser)
 
     private iKommandOne<string> _dalamFormat = (iKommandOne<string>) _cliParser["dalamFormat"];
 
-    internal void execute()
+    internal IEnumerable<string> getProjections()
     {
+        if (_dalamFormat.Results.Any() == false)
+            yield break;
+
         var aArrayOfObject = _jsonProces.getProperties();
         foreach(var item in _dalamFormat.Results)
         {
@@ -18,7 +21,7 @@ internal class projectionService(jsonProcess _jsonProces, iCLIparser _cliParser)
                 var placeholder = $"hasil{intA + 1:D2}";
                 theResult = theResult.Replace(placeholder, aArrayOfObject[intA]?.ToString() ?? string.Empty);
             }
-            Console.WriteLine(theResult);
+            yield return theResult;
         }
     }
 }

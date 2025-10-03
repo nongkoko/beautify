@@ -25,6 +25,7 @@ public class Program
         aBuilder.AddScoped(oo => aParser);
         aBuilder.AddScoped<dataSourceSolver>();
         aBuilder.AddScoped<wrapper>();
+        aBuilder.AddScoped<JObjectSolver>();
         aBuilder.AddScoped<projectionService>();
         aBuilder.AddScoped<jsonProcess>();
         var servProvider = aBuilder.BuildServiceProvider();
@@ -46,7 +47,10 @@ public class Program
 
         if (aParser["dalamFormat"] is iKommandOne<string> theFormat && theFormat.Results.Any())
         {
-            servProvider.GetRequiredService<projectionService>().execute();
+            foreach(var item in servProvider.GetRequiredService<projectionService>().getProjections())
+            {
+                Console.WriteLine(item);
+            }
             return;
         }
 
