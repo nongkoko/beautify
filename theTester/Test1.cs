@@ -51,5 +51,18 @@ namespace theTester
             Program.Main(theArgs);
 
         }
+
+        [TestMethod("dari file anu, view as table")]
+        public void TestMethod5()
+        {
+            //var fileReader = new StreamReader(@"C:\Users\afrya\expenses");
+            //Console.SetIn(fileReader);
+
+            var commandLine = @"dari file c:\users\afrya\expenses view as table";
+            var theArgs = commandLine.toArgs();
+
+            Program.Main(theArgs);
+
+        }
     }
 }

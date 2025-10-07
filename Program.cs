@@ -11,8 +11,10 @@ public class Program
         var aParser = factory.newCliParser(args);
         aParser.registerCommand<string, string>("wrap dengan awal dan akhir", "awal", "akhir", "wrap with").setKeyName("wrapthis");
         aParser.registerCommand("untuk ambil source data dari clipboard", "--clip", "dari clipboard").setKeyName("dariClip");
+        aParser.registerCommand("tampilkan dalam bentuk table", commandTriggers: "view as table").setKeyName("asTable");
         aParser.registerCommand<int>("ambil item ke n dari array of object di json", "n starting 1", "item ke").setKeyName("itemKe");
         aParser.registerCommand<string>("untuk ambil source data dari file", "path file name", commandTriggers: "dari file").setKeyName("dariFile");
+        aParser.registerCommand<string>("spread jarray file ke beberapa file", "file name pattern", commandTriggers: "spread to").setKeyName("spread");
         aParser.registerCommand("show the source data before execution", commandTriggers: "show").setKeyName("showContent");
         aParser.registerCommand<string[]>("ambil data untuk projection", "list properties delimited by space", commandTriggers: "ambil property").setKeyName("ambilProperty");
         aParser.registerCommand<string>("format projection", @"formatnya contoh ""coordinate hasil01,hasil02""", commandTriggers: "dalam format").setKeyName("dalamFormat");
@@ -26,6 +28,9 @@ public class Program
         aBuilder.AddScoped<dataSourceSolver>();
         aBuilder.AddScoped<wrapper>();
         aBuilder.AddScoped<JObjectSolver>();
+        aBuilder.AddScoped<JArraySolver>();
+        aBuilder.AddScoped<spreader>();
+        aBuilder.AddScoped<asTable>();
         aBuilder.AddScoped<projectionService>();
         aBuilder.AddScoped<jsonProcess>();
         var servProvider = aBuilder.BuildServiceProvider();
@@ -37,6 +42,18 @@ public class Program
 
         var itsAJson = Regex.IsMatch(dataSource, @"^\s*[{\[][\s\S]*[}\]]\s*$");
         var itsAnXml = Regex.IsMatch(dataSource, @"^<[\s\S]*>$");
+
+        if (aParser["spread"] is iKommandOne<string> theSpread && theSpread.Results.Any())
+        {
+            servProvider.GetRequiredService<spreader>().execute();
+            return;
+        }
+
+        if (aParser["asTable"] is iKommandFlag viewAsTable && viewAsTable.Results.Any())
+        {
+            servProvider.GetRequiredService<asTable>().execute();
+            return;
+        }
 
         if (aParser["wrapthis"] is iKommandTwo<string, string> theWrap && theWrap.Results.Any())
         {
